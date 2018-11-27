@@ -1,0 +1,32 @@
+
+
+<div>
+  <table class="table table-bordered">
+  <thead class="thead-light">
+    <tr>
+      <th>#</th>
+      <th>Event</th>
+      <th>Description</th>
+      <th>Speaker</th>
+      <th>Date</th>
+      <th>Avaliable</th>
+      <th>Action</th>
+    </tr>
+
+  </thead>
+  <tbody>
+    <tr *ngFor = "let item of listEvent; let i = index">
+      <th>{{i+1}}</th>
+      <td>{{item.title}}</td>
+      <td>{{item.description}}</td>
+      <td>{{item.speaker}}</td>
+      <td>{{item.date}}</td>
+      <td>{{item.avaliable}}</td>
+      <td>
+        <button type="button" class="btn btn-primary" (click)="onBtnClick()"> Submit this course</button>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
