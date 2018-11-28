@@ -1,21 +1,22 @@
 package main
 
 import (
-	"net/http"
-	"github.com/gorilla/mux"
 	"encoding/json"
+	"log"
+	"net/http"
 	. "reserve-service/config"
 	. "reserve-service/dao"
 	. "reserve-service/models"
+
+	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
-	"log"
 )
 
 var config = Config{}
 var dao = EventsDAO{}
 
-func AllEvent (w http.ResponseWriter, r *http.Request) {
-	log.Println("NEW REQ=>", r.Method,r.URL)
+func AllEvent(w http.ResponseWriter, r *http.Request) {
+	log.Println("NEW REQ=>", r.Method, r.URL)
 	setupResponse(&w, r)
 	events, err := dao.FindAll()
 	if err != nil {
@@ -25,8 +26,8 @@ func AllEvent (w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusOK, events)
 }
 
-func CreateEvent (w http.ResponseWriter, r *http.Request){
-	log.Println("NEW REQ=>", r.Method,r.URL ,r.Body)
+func CreateEvent(w http.ResponseWriter, r *http.Request) {
+	log.Println("NEW REQ=>", r.Method, r.URL, r.Body)
 	setupResponse(&w, r)
 	if r.Method == "OPTIONS" {
 		return
@@ -46,6 +47,7 @@ func CreateEvent (w http.ResponseWriter, r *http.Request){
 }
 
 func FindEventEndPoint(w http.ResponseWriter, r *http.Request) {
+
 	params := mux.Vars(r)
 	event, err := dao.FindById(params["id"])
 	if err != nil {
@@ -56,6 +58,10 @@ func FindEventEndPoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateEventEndPoint(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	if r.Method == "OPTIONS" {
+		return
+	}
 	defer r.Body.Close()
 	var event Event
 	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
@@ -70,6 +76,10 @@ func UpdateEventEndPoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteEventEndPoint(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	if r.Method == "OPTIONS" {
+		return
+	}
 	defer r.Body.Close()
 	var event Event
 	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
@@ -95,10 +105,10 @@ func startServer() error {
 	r := mux.NewRouter()
 	r.HandleFunc("/events", AllEvent).Methods("GET")
 	r.HandleFunc("/events/{id}", FindEventEndPoint).Methods("GET")
-	r.HandleFunc("/events", CreateEvent).Methods("POST","OPTIONS")
+	r.HandleFunc("/events", CreateEvent).Methods("POST", "OPTIONS")
 	r.HandleFunc("/events", UpdateEventEndPoint).Methods("PUT")
-	r.HandleFunc("/events", DeleteEventEndPoint).Methods("DELETE")
-	
+	r.HandleFunc("/events/delete", DeleteEventEndPoint).Methods("POST", "OPTIONS")
+
 	err := http.ListenAndServe(":3000", r)
 	return err
 
@@ -117,7 +127,7 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 
 func setupResponse(w *http.ResponseWriter, req *http.Request) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-    (*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 	(*w).Header().Set("Access-Control-Max-Age", "86400")
 }

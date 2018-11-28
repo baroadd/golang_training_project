@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { EventServiceService } from '../../services/event-service.service';
 import { Router } from '@angular/router';
 @Component({
-  selector: 'app-overview-events',
-  templateUrl: './overview-events.component.html',
-  styleUrls: ['./overview-events.component.css']
+  selector: 'app-delete-event',
+  templateUrl: './delete-event.component.html',
+  styleUrls: ['./delete-event.component.css']
 })
-export class OverviewEventsComponent implements OnInit {
+export class DeleteEventComponent implements OnInit {
   listEvent: any;
   constructor(
     private api: EventServiceService,
@@ -21,8 +21,13 @@ export class OverviewEventsComponent implements OnInit {
     });
   }
 
-  onBtnClick(obj: any) {
-    this.router.navigate(['submit', obj]);
+  onBtnClick(event: any) {
+    this.api.deleteEvent(event).subscribe(data => {
+      console.log(data)
+    });
+    this.api.getAllEvent().subscribe(data => {
+      this.listEvent = data;
+    });
   }
 
 }

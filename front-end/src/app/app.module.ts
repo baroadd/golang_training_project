@@ -14,10 +14,12 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { SubmitCourseComponent } from './modules/submit-course/submit-course.component';
 import { CreateEventComponent } from './modules/create-event/create-event.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DeleteEventComponent } from './modules/delete-event/delete-event.component';
 const appRoutes: Routes = [
   { path: '', component: OverviewEventsComponent },
   { path: 'submit', component: SubmitCourseComponent },
   { path: 'create', component: CreateEventComponent },
+  { path: 'delete', component: DeleteEventComponent },
 ];
 
 @NgModule({
@@ -26,7 +28,8 @@ const appRoutes: Routes = [
     OverviewEventsComponent,
     NavbarComponent,
     SubmitCourseComponent,
-    CreateEventComponent
+    CreateEventComponent,
+    DeleteEventComponent
   ],
   imports: [
     BrowserModule,
