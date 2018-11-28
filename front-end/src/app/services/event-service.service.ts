@@ -23,7 +23,7 @@ export class EventServiceService {
       round: round,
       user: []
     };
-    return this.http.post('http://' + this.config.hostname + ':' + this.config.port + '/events', payload);
+    this.http.post('http://' + this.config.hostname + ':' + this.config.port + '/events', payload);
   }
 
 }
