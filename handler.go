@@ -8,12 +8,14 @@ import (
 	. "reserve-service/dao"
 	. "reserve-service/models"
 	"gopkg.in/mgo.v2/bson"
+	"log"
 )
 
 var config = Config{}
 var dao = EventsDAO{}
 
 func AllEvent (w http.ResponseWriter, r *http.Request) {
+	log.Println("NEW REQ=>", r.Method,r.URL)
 	setupResponse(&w, r)
 	events, err := dao.FindAll()
 	if err != nil {
@@ -24,6 +26,11 @@ func AllEvent (w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateEvent (w http.ResponseWriter, r *http.Request){
+	log.Println("NEW REQ=>", r.Method,r.URL ,r.Body)
+	setupResponse(&w, r)
+	if r.Method == "OPTIONS" {
+		return
+	}
 	defer r.Body.Close()
 	var event Event
 	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
@@ -88,7 +95,7 @@ func startServer() error {
 	r := mux.NewRouter()
 	r.HandleFunc("/events", AllEvent).Methods("GET")
 	r.HandleFunc("/events/{id}", FindEventEndPoint).Methods("GET")
-	r.HandleFunc("/events", CreateEvent).Methods("POST")
+	r.HandleFunc("/events", CreateEvent).Methods("POST","OPTIONS")
 	r.HandleFunc("/events", UpdateEventEndPoint).Methods("PUT")
 	r.HandleFunc("/events", DeleteEventEndPoint).Methods("DELETE")
 	
@@ -111,5 +118,6 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 func setupResponse(w *http.ResponseWriter, req *http.Request) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
     (*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-    (*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	(*w).Header().Set("Access-Control-Max-Age", "86400")
 }

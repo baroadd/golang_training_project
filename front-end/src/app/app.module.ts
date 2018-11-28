@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { OverviewEventsComponent } from './modules/overview-events/overview-events.component';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from './modules/navbar/navbar.component';
-import { HttpModule } from '@angular/http';
+
 import { HttpClientModule } from '@angular/common/http';
 import { EventServiceService } from './services/event-service.service';
 import { ConfigService } from './services/config.service';
@@ -33,7 +33,6 @@ const appRoutes: Routes = [
     AppRoutingModule,
     FormsModule,
     RouterModule.forRoot(appRoutes),
-    HttpModule,
     HttpClientModule,
     ButtonsModule.forRoot(),
     BsDatepickerModule.forRoot(),
