@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { EventServiceService } from '../../services/event-service.service';
+
+
 
 @Component({
   selector: 'app-create-event',
@@ -16,8 +17,9 @@ export class CreateEventComponent implements OnInit {
   ngOnInit() {
   }
 
-  createEvent(){
-    this.api.createEvent("ddd","ddd","ddd","ddd","ddd","ddd");
+
+  createEvent() {
+    this.api.createEvent('1230', '1230', '1230', '1230', '1230', '1230').subscribe(data => {});
   }
 
 }

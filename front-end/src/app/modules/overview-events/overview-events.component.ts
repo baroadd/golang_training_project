@@ -18,7 +18,6 @@ export class OverviewEventsComponent implements OnInit {
   ngOnInit() {
     this.api.getAllEvent().subscribe(data => {
       this.listEvent = data;
-      console.log(this.listEvent);
     });
   }
 
