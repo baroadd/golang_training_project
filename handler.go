@@ -7,6 +7,9 @@ import (
 	. "reserve-service/config"
 	. "reserve-service/dao"
 	. "reserve-service/models"
+	"os"
+	"encoding/csv"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
@@ -93,6 +96,33 @@ func DeleteEventEndPoint(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
 }
 
+func ExportCSV(w http.ResponseWriter, r *http.Request){
+	setupResponse(&w, r)
+	if r.Method == "OPTIONS" {
+		return
+	}
+	defer r.Body.Close()
+	var event Event
+	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		return
+	}
+	file, err := os.Create("result.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+	for index, value := range event.User {
+		err := writer.Write([]string{strconv.Itoa(index+1),value})
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	respondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
+}
+
 func init() {
 	config.Read()
 
@@ -108,6 +138,7 @@ func startServer() error {
 	r.HandleFunc("/events", CreateEvent).Methods("POST", "OPTIONS")
 	r.HandleFunc("/events", UpdateEventEndPoint).Methods("PUT")
 	r.HandleFunc("/events/delete", DeleteEventEndPoint).Methods("POST", "OPTIONS")
+	r.HandleFunc("/event/report", ExportCSV).Methods("POST","OPTIONS")
 
 	err := http.ListenAndServe(":3000", r)
 	return err

@@ -46,7 +46,8 @@ export class EventServiceService {
       'round': events.round,
       'user': events.user
     };
-    return this.http.post('http://' + this.config.hostname + ':' + this.config.port + '/events/delete', JSON.stringify(payload), { headers: headers });
+    return this.http.post('http://' + this.config.hostname + ':' + this.config.port
+      + '/events/delete', JSON.stringify(payload), { headers: headers });
   }
 
   updateEvent(events: any) {
@@ -62,8 +63,9 @@ export class EventServiceService {
       'speaker': events.speaker,
       'date': events.date,
       'round': events.round,
-      'user': events.user
+      'user': []
     };
-    return this.http.put('http://' + this.config.hostname + ':' + this.config.port + '/events', JSON.stringify(payload), { headers: headers });
+    return this.http.put('http://' + this.config.hostname + ':' + this.config.port
+      + '/events', JSON.stringify(payload), { headers: headers });
   }
 }

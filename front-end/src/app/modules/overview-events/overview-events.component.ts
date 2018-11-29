@@ -22,7 +22,8 @@ export class OverviewEventsComponent implements OnInit {
   }
 
   onBtnClick(obj: any) {
-    this.router.navigate(['submit', obj]);
+    // this.router.navigate(['submit', obj]);
+    this.router.navigateByUrl('/submit');
   }
 
 }

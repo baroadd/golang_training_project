@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router } from '@angular/router';
 import { EventServiceService } from '../../services/event-service.service';
 @Component({
   selector: 'app-submit-course',
@@ -7,7 +7,11 @@ import { EventServiceService } from '../../services/event-service.service';
   styleUrls: ['./submit-course.component.css']
 })
 export class SubmitCourseComponent implements OnInit {
-  private obj: any;
+   obj: any;
+   id: any;
+   fName: any;
+   lName: any;
+   tel: any;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -21,8 +25,9 @@ export class SubmitCourseComponent implements OnInit {
   }
 
   updateEvents() {
+    // this.obj.user.push(this.id + ' ' + this.fName + ' ' + this.lName + ' ' + this.tel);
     this.api.updateEvent(this.obj).subscribe(data => {
-      console.log(data)
+      console.log(data);
     });
   }
 

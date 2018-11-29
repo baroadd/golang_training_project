@@ -15,19 +15,19 @@ export class CreateEventComponent implements OnInit {
     private router: Router,
   ) { }
   private title: any;
-  private desc: any
+  private desc: any;
   private limit: number;
   private speaker: any;
   private date: any;
   private round: any;
 
   ngOnInit() {
-    this.title = "";
-    this.desc = "";
+    this.title = '';
+    this.desc = '';
     this.limit = 0;
-    this.speaker ="";
-    this.date = "";
-    this.round = "";
+    this.speaker = '';
+    this.date = '';
+    this.round = '';
   }
 
 
